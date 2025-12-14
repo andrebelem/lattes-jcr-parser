@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lattes JCR Parser</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <h1>Lattes JCR Parser</h1>
+  <p>Envie o HTML do Currículo Lattes salvo como <strong>Página completa</strong>.</p>
+
+  <input type="file" id="fileInput" accept=".html,.htm">
+  <br><br>
+  <button id="processBtn" disabled>Processar</button>
+  <button id="downloadBtn" disabled>Baixar Excel</button>
+
+  <table id="preview"></table>
+
+  <script src="app.js"></script>
+</body>
+</html>
