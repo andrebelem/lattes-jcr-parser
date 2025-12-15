@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,14 +14,15 @@
 
     <p>
       Envie o arquivo <strong>HTML completo</strong> do Currículo Lattes (salvo como “Página completa”,
-      preferencialmente via Firefox). O processamento ocorre localmente no seu navegador.
+      preferencialmente via Firefox). Todo o processamento ocorre localmente no seu navegador.
     </p>
 
     <section class="card">
       <label for="fileInput"><strong>Arquivo HTML do Lattes</strong></label><br />
       <input type="file" id="fileInput" accept=".html,.htm" />
+
       <p class="hint">
-        Dica: arquivos <code>.mhtml</code> não funcionam. Salve como HTML completo.
+        Observação: arquivos <code>.mhtml</code> não são suportados. Salve como HTML completo.
       </p>
 
       <div class="controls">
@@ -40,6 +42,27 @@
         </div>
       </div>
 
+      <!-- Bloco de intervalo de anos: aparece só depois de processar -->
+      <div id="yearRangeBox" style="display:none; margin-top:12px;">
+        <label>
+          Ano inicial:
+          <input type="number" id="yearFrom" placeholder="ex: 2015">
+        </label>
+
+        <label style="margin-left:12px;">
+          Ano final:
+          <input type="number" id="yearTo" placeholder="ex: 2025">
+        </label>
+
+        <button id="calcBtn" style="margin-left:12px;" disabled>
+          Calcular somatório
+        </button>
+
+        <p class="hint" style="margin-top:8px;">
+          Dica: o somatório usa apenas registros que têm JCR no HTML.
+        </p>
+      </div>
+
       <div id="summary" class="summary"></div>
     </section>
 
@@ -52,7 +75,7 @@
 
     <footer class="footer">
       <small>
-        Observação: o JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes.
+        O JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes (ex.: atributo <code>original-title</code>).
         Se o HTML não contiver esses ícones, as colunas de JCR ficarão vazias.
       </small>
     </footer>
@@ -61,4 +84,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
