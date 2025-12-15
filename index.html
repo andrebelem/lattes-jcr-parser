@@ -2,21 +2,63 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lattes JCR Parser</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <h1>Lattes JCR Parser</h1>
-  <p>Envie o HTML do Currículo Lattes salvo como <strong>Página completa</strong>.</p>
+  <main>
+    <h1>Lattes JCR Parser</h1>
 
-  <input type="file" id="fileInput" accept=".html,.htm">
-  <br><br>
-  <button id="processBtn" disabled>Processar</button>
-  <button id="downloadBtn" disabled>Baixar Excel</button>
+    <p>
+      Envie o arquivo <strong>HTML completo</strong> do Currículo Lattes (salvo como “Página completa”,
+      preferencialmente via Firefox). O processamento ocorre localmente no seu navegador.
+    </p>
 
-  <table id="preview"></table>
+    <section class="card">
+      <label for="fileInput"><strong>Arquivo HTML do Lattes</strong></label><br />
+      <input type="file" id="fileInput" accept=".html,.htm" />
+      <p class="hint">
+        Dica: arquivos <code>.mhtml</code> não funcionam. Salve como HTML completo.
+      </p>
+
+      <div class="controls">
+        <label for="previewLimit">
+          Pré-visualização:
+          <select id="previewLimit">
+            <option value="10">10 linhas</option>
+            <option value="50">50 linhas</option>
+            <option value="200">200 linhas</option>
+            <option value="all">Todas</option>
+          </select>
+        </label>
+
+        <div class="buttons">
+          <button id="processBtn" disabled>Processar</button>
+          <button id="downloadBtn" disabled>Baixar Excel</button>
+        </div>
+      </div>
+
+      <div id="summary" class="summary"></div>
+    </section>
+
+    <section class="card">
+      <h2>Pré-visualização</h2>
+      <div class="table-wrap">
+        <table id="preview" aria-label="Pré-visualização dos artigos extraídos"></table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <small>
+        Observação: o JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes.
+        Se o HTML não contiver esses ícones, as colunas de JCR ficarão vazias.
+      </small>
+    </footer>
+  </main>
 
   <script src="app.js"></script>
 </body>
 </html>
+
