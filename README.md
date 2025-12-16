@@ -1,15 +1,13 @@
+<img src="assets/lattes-jcr-parser.png" alt="Lattes JCR Parser logo" width="120" align="left">
 # Lattes JCR Parser
 
 Ferramenta web para extração, organização e análise do fator de impacto (JCR) a partir do [Currículo Lattes](https://lattes.cnpq.br/) salvo em formato HTML **completo**.
 
-Autor: Andre Belem [andrebelem@id.uff.br](mailto:andrebelem@id.uff.br)<br>  
-       (em parceria com a [F.R.I.D.A.Y.](https://observatoriooceanografico.org/equipe/friday-bot/))
+Autor: Andre Belem [andrebelem@id.uff.br](mailto:andrebelem@id.uff.br) (em parceria com a [F.R.I.D.A.Y.](https://observatoriooceanografico.org/equipe/friday-bot/))
 
 ---
 
 ## Motivação
-
-Em diversos editais de fomento, avaliações institucionais e análises comparativas de produção acadêmica, especialmente no âmbito do CNPq, CAPES e fundações estaduais, o fator de impacto dos periódicos ([Journal Citation Reports – JCR](https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/)) é amplamente utilizado como um dos indicadores de qualidade da produção científica.
 
 Apesar disso, não existe uma ferramenta oficial ou padronizada que permita extrair automaticamente, a partir do Currículo Lattes, os valores de JCR associados aos artigos publicados, tampouco realizar somatórios ou análises temporais de forma transparente e reproduzível.
 
