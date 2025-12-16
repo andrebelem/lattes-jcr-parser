@@ -6,12 +6,13 @@
 
 Ferramenta web para extração, organização e análise do fator de impacto (JCR) a partir do [Currículo Lattes](https://lattes.cnpq.br/) salvo em formato HTML **completo**.
 
+Acesse o aplicativo em [https://andrebelem.github.io/lattes-jcr-parser/](https://andrebelem.github.io/lattes-jcr-parser/)
+
 Autor: Andre Belem [andrebelem@id.uff.br](mailto:andrebelem@id.uff.br) (em parceria com a [F.R.I.D.A.Y.](https://observatoriooceanografico.org/equipe/friday-bot/))
 
 ---
 
 ## Motivação
-
 Apesar disso, não existe uma ferramenta oficial ou padronizada que permita extrair automaticamente, a partir do Currículo Lattes, os valores de JCR associados aos artigos publicados, tampouco realizar somatórios ou análises temporais de forma transparente e reproduzível.
 
 Este projeto surgiu para preencher essa lacuna, oferecendo uma solução simples, auditável e totalmente executada no navegador do usuário.
