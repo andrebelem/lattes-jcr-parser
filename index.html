@@ -25,7 +25,7 @@
     <div>
       <h1 style="margin:0;">Lattes JCR Parser</h1>
       <p class="hint" style="margin:4px 0 0 0;">
-        Extração e somatório de JCR a partir do HTML completo do Currículo Lattes, com execução local no navegador.
+        Extração e somatório do fator de impacto baseado no JCR (Journal Citation Reports) a partir do HTML completo do Currículo Lattes, com execução local no navegador.
       </p>
     </div>
 
@@ -103,7 +103,7 @@
     </button>
 
     <p class="hint" style="margin-top:8px;">
-      O somatório usa apenas registros cujo HTML contém o valor de JCR (ícone “jcr” com tooltip).
+      O somatório usa apenas registros cujo HTML contém o valor de IF no JCR (ícone “jcr” com tooltip).
     </p>
   </div>
 
@@ -127,14 +127,14 @@
 </section>
 <section class="card">
   <br><br>
-  <h2 style="margin-top:0;">JCR acumulado por ano</h2>
+  <h2 style="margin-top:0;">IF acumulado por ano (JCR)</h2>
   <canvas id="jcrChart" height="100"></canvas>
   <br><br>
 </section>
 <footer class="footer">
   <small>
     Privacidade e execução local: todo o processamento ocorre em client-side. Nenhum dado é enviado, armazenado ou transmitido para servidores externos.<br>
-    Nota técnica: o JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes (atributo <code>original-title</code>). Se o HTML não contiver esses ícones, as colunas de JCR ficarão vazias.
+    Nota técnica: o IF do JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes (atributo <code>original-title</code>). Se o HTML não contiver esses ícones, as colunas de JCR ficarão vazias.
     <br><br>
 
     <strong>Links úteis</strong><br>

@@ -115,7 +115,7 @@ downloadBtn?.addEventListener("click", () => {
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.json_to_sheet(data);
   XLSX.utils.book_append_sheet(wb, ws, "Artigos");
-  XLSX.writeFile(wb, "lattes_jcr.xlsx");
+  XLSX.writeFile(wb, "lattes_IF_jcr.xlsx");
 });
 
 // ----------------- Core parsing -----------------
@@ -148,8 +148,8 @@ function parseHTML(html) {
     data.push({
       Ano: ano,
       Referencia: ref,
-      JCR_Ano: jcrAno,
-      JCR_Valor: jcrValor
+      IF_JCR_Ano: jcrAno,
+      IF_JCR_Valor: jcrValor
     });
   });
 
@@ -164,7 +164,7 @@ function parseHTML(html) {
 
     if (summaryDiv) {
       summaryDiv.innerHTML = `
-        <strong>Nenhum artigo com JCR encontrado</strong><br>
+        <strong>Nenhum artigo com IF-JCR encontrado</strong><br>
         Este currículo não contém itens na seção “Artigos completos publicados em periódicos”
         (blocos <code>div.artigo-completo</code>). Se você esperava artigos, verifique se salvou o Lattes completo e se o currículo possui artigos cadastrados.
       `;
@@ -185,13 +185,13 @@ function parseHTML(html) {
 
   // Caso 2: existem artigos, mas nenhum tem JCR no HTML
   const jcrCount = data
-    .map(r => toFloatSafe(r.JCR_Valor))
+    .map(r => toFloatSafe(r.IF_JCR_Valor))
     .filter(Number.isFinite).length;
 
   if (jcrCount === 0 && summaryDiv) {
     summaryDiv.innerHTML = `
-      <strong>Nenhum artigo com JCR encontrado</strong><br>
-      Foram encontrados ${data.length} artigo(s), mas nenhum contém valores de JCR no HTML.
+      <strong>Nenhum artigo com IF-JCR encontrado</strong><br>
+      Foram encontrados ${data.length} artigo(s), mas nenhum contém valores de IF-JCR no HTML.
       Isso normalmente ocorre quando o arquivo foi salvo pelo Chrome (ou sem “Página completa”) e o tooltip do JCR não foi preservado.
       Salve pelo Firefox (Página completa) e tente novamente.
     `;
@@ -260,7 +260,7 @@ function renderSummary() {
   });
 
   const jcrNums = filtered
-    .map(r => toFloatSafe(r.JCR_Valor))
+    .map(r => toFloatSafe(r.IF_JCR_Valor))
     .filter(Number.isFinite);
 
   const totalArtigos = filtered.length;
@@ -274,9 +274,9 @@ function renderSummary() {
   summaryDiv.innerHTML = `
     <strong>Resumo (${labelFrom}–${labelTo})</strong><br>
     Artigos no intervalo: ${totalArtigos}<br>
-    Com JCR: ${comJCR}<br>
-    Soma do JCR: ${somaJCR.toFixed(2)}<br>
-    Média do JCR (apenas com JCR): ${mediaJCR.toFixed(2)}
+    Com IF-JCR: ${comJCR}<br>
+    Soma do IF-JCR: ${somaJCR.toFixed(2)}<br>
+    Média do IF-JCR (apenas com JCR): ${mediaJCR.toFixed(2)}
   `;
 }
 
@@ -286,7 +286,7 @@ function buildJcrAccumulatedSeries(fromYear = null, toYear = null) {
 
   data.forEach(r => {
     const y = toIntSafe(r.Ano);
-    const j = toFloatSafe(r.JCR_Valor);
+    const j = toFloatSafe(r.IF_JCR_Valor);
     if (y === null || j === null) return;
 
     if (fromYear !== null && y < fromYear) return;
@@ -345,12 +345,12 @@ function renderJcrChart() {
       labels: years,
       datasets: [
         {
-          label: "JCR acumulado",
+          label: "IF-JCR acumulado",
           data: accumulated,
           tension: 0.2
         },
         {
-          label: "JCR anual (soma)",
+          label: "IF-JCR anual (soma)",
           data: perYear,
           tension: 0.2
         }
@@ -363,7 +363,7 @@ function renderJcrChart() {
       },
       scales: {
         x: { title: { display: true, text: "Ano" } },
-        y: { title: { display: true, text: "JCR (soma / acumulado)" } }
+        y: { title: { display: true, text: "IF-JCR (soma / acumulado)" } }
       }
     }
   });
@@ -378,7 +378,7 @@ function renderTable() {
   if (!data.length) return;
 
   const header = table.insertRow();
-  ["Ano", "Referencia", "JCR_Ano", "JCR_Valor"].forEach(h => {
+  ["Ano", "Referencia", "IF_JCR_Ano", "IF_JCR_Valor"].forEach(h => {
     const th = document.createElement("th");
     th.textContent = h;
     header.appendChild(th);
@@ -394,7 +394,7 @@ function renderTable() {
 
   rows.forEach(row => {
     const tr = table.insertRow();
-    ["Ano", "Referencia", "JCR_Ano", "JCR_Valor"].forEach(k => {
+    ["Ano", "Referencia", "IF_JCR_Ano", "IF_JCR_Valor"].forEach(k => {
       const td = tr.insertCell();
       td.textContent = row[k] ?? "";
     });
