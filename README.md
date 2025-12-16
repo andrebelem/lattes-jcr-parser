@@ -1,15 +1,15 @@
 # Lattes JCR Parser
 
-Ferramenta web para extração, organização e análise do fator de impacto (JCR) a partir do Currículo Lattes salvo em formato HTML completo.
+Ferramenta web para extração, organização e análise do fator de impacto (JCR) a partir do [Currículo Lattes](https://lattes.cnpq.br/) salvo em formato HTML **completo**.
 
-Autor: André Luiz Belem (andrebelem@id.uff.br)  
-Em parceria com o projeto F.R.I.D.A.Y.
+Autor: Andre Belem [andrebelem@id.uff.br](mailto:andrebelem@id.uff.br)<br>  
+       (em parceria com a [F.R.I.D.A.Y.](https://observatoriooceanografico.org/equipe/friday-bot/))
 
 ---
 
 ## Motivação
 
-Em diversos editais de fomento, avaliações institucionais e análises comparativas de produção acadêmica, especialmente no âmbito do CNPq, CAPES e fundações estaduais, o fator de impacto dos periódicos (Journal Citation Reports – JCR) é amplamente utilizado como um dos indicadores de qualidade da produção científica.
+Em diversos editais de fomento, avaliações institucionais e análises comparativas de produção acadêmica, especialmente no âmbito do CNPq, CAPES e fundações estaduais, o fator de impacto dos periódicos ([Journal Citation Reports – JCR](https://clarivate.com/academia-government/scientific-and-academic-research/research-funding-analytics/journal-citation-reports/)) é amplamente utilizado como um dos indicadores de qualidade da produção científica.
 
 Apesar disso, não existe uma ferramenta oficial ou padronizada que permita extrair automaticamente, a partir do Currículo Lattes, os valores de JCR associados aos artigos publicados, tampouco realizar somatórios ou análises temporais de forma transparente e reproduzível.
 
@@ -23,17 +23,17 @@ O Journal Citation Reports (JCR) é um indicador bibliométrico publicado pela C
 
 Embora o JCR não seja um indicador absoluto de qualidade individual de artigos ou pesquisadores, ele é amplamente utilizado como critério auxiliar em avaliações acadêmicas, editais e relatórios institucionais.
 
-
-
 ## Como o programa funciona
 
-O Lattes JCR Parser opera exclusivamente em ambiente client-side, o que significa que todo o processamento ocorre localmente no navegador do usuário.
+O *Lattes JCR Parser* opera exclusivamente em ambiente *client-side*, escrito em JavaScript, o que significa que todo o processamento ocorre localmente no navegador do usuário.
 
 Nenhum dado é enviado, armazenado ou transmitido para servidores externos. Nenhuma informação é gravada ou compartilhada.
 
+Para que o aplicativo funcione corretamente, é necessário que o navegador permita a execução de JavaScript. Caso o JavaScript esteja desabilitado por configurações de segurança, extensões de bloqueio ou políticas institucionais, o processamento não será executado.
+
 O funcionamento básico consiste em:
 
-1. O usuário faz o upload do arquivo HTML completo do Currículo Lattes  
+1. O usuário faz o upload do arquivo HTML **completo** do Currículo Lattes  
 2. O programa analisa a estrutura do HTML  
 3. São identificados os artigos completos publicados em periódicos  
 4. Quando disponível, o fator de impacto JCR é extraído a partir do ícone “jcr” presente no próprio HTML do Lattes  
@@ -49,29 +49,17 @@ O funcionamento básico consiste em:
    - Média do JCR no intervalo selecionado
 7. Todos os dados podem ser exportados para Excel
 
-
-
 ## Requisitos fundamentais
 
-### Arquivo HTML completo
+### Arquivo HTML completo e navegador recomendado
 
-É absolutamente essencial que o Currículo Lattes seja salvo como HTML completo, incluindo todos os arquivos associados.
-
-Arquivos no formato `.mhtml` não são suportados.
-
-### Navegador recomendado
-
-O Google Chrome não gera corretamente um HTML completo compatível com este parser.
-
-Recomenda-se fortemente o uso do Mozilla Firefox, seguindo os passos:
+É absolutamente essencial que o Currículo Lattes seja salvo como HTML completo, incluindo todos os arquivos associados ! Arquivos no formato `.mhtml` não são suportados. O Google Chrome não gera corretamente um HTML completo compatível com este parser. Por isso, recomenda-se fortemente o uso do [Mozilla Firefox](https://www.firefox.com/pt-BR/), seguindo os passos:
 
 1. Acesse o Currículo Lattes  
 2. Clique com o botão direito na página  
 3. Selecione “Salvar página como”  
-4. Escolha a opção “Página completa”  
+4. Escolha a opção **“Página completa”**  
 5. Salve o arquivo `.html` e a pasta associada
-
-
 
 ## Sobre inconsistências nos resultados
 
@@ -83,23 +71,15 @@ Caso algum artigo não apresente valor de JCR ou apareça com informações inco
 
 O programa apenas extrai informações que já estão presentes no HTML gerado pelo próprio sistema Lattes.
 
-
-
 ## Escopo e limitações
 
-O somatório de JCR não constitui um indicador bibliométrico oficial.
+O somatório de JCR não constitui um indicador bibliométrico oficial. Os resultados devem ser utilizados de forma exploratória, comparativa ou para organização interna. A ferramenta não substitui análises qualitativas da produção científica.
 
-Os resultados devem ser utilizados de forma exploratória, comparativa ou para organização interna.
-
-A ferramenta não substitui análises qualitativas da produção científica.
-
-
+Porém, o gráfico de JCR acumulado ao longo do tempo tem caráter auxiliar e exploratório, sendo particularmente útil para visualizar tendências e a rampa de crescimento da produção associada a periódicos com fator de impacto registrado. Ainda assim, não deve ser interpretado como métrica formal de avaliação.
 
 ## Desenvolvimento contínuo
 
-Este é um projeto em constante desenvolvimento.
+Este é um projeto em constante desenvolvimento. Novas funcionalidades, melhorias no parser e refinamentos na análise poderão ser incorporados progressivamente, mantendo sempre os princípios de transparência, simplicidade e execução local (embora penso que esta deveria ser uma ferramenta incorporada do próprio Lattes).
 
-Novas funcionalidades, melhorias no parser e refinamentos na análise poderão ser incorporados progressivamente, mantendo sempre os princípios de transparência, simplicidade e execução local.
-
-Contribuições, sugestões e testes são bem-vindos.  
-Se você considerou este aplicativo útil, divulgue e cite.
+Contribuições, sugestões e testes são bem-vindos por meio do repositório no GitHub (https://github.com/andrebelem/lattes-jcr-parser).  
+Se você considerou este aplicativo útil, a divulgação, a citação do projeto e o apoio voluntário via https://buymeacoffee.com/andrebelem são apreciados.
