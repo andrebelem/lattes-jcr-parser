@@ -1,4 +1,5 @@
-<img src="assets/lattes-jcr-parser.png" alt="Lattes JCR Parser logo" width="120" align="left">
+<img src="assets/lattes-jcr-parser.png" alt="Lattes JCR Parser logo" width="200" align="left">
+
 # Lattes JCR Parser
 
 Ferramenta web para extração, organização e análise do fator de impacto (JCR) a partir do [Currículo Lattes](https://lattes.cnpq.br/) salvo em formato HTML **completo**.
