@@ -4,7 +4,7 @@
 
 # Lattes JCR Parser
 
-Ferramenta web para extração, organização e análise do fator de impacto (JCR) a partir do [Currículo Lattes](https://lattes.cnpq.br/) salvo em formato HTML **completo**.
+Ferramenta web para extração, organização e análise da evolução do **fator de impacto** (baseado no JCR) dos artigos do [Currículo Lattes](https://lattes.cnpq.br/) salvo em formato HTML **completo**.
 
 Acesse o aplicativo em [https://andrebelem.github.io/lattes-jcr-parser/](https://andrebelem.github.io/lattes-jcr-parser/)
 
@@ -13,42 +13,41 @@ Autor: Andre Belem [andrebelem@id.uff.br](mailto:andrebelem@id.uff.br) (em parce
 ---
 
 ## Motivação
-Apesar disso, não existe uma ferramenta oficial ou padronizada que permita extrair automaticamente, a partir do Currículo Lattes, os valores de JCR associados aos artigos publicados, tampouco realizar somatórios ou análises temporais de forma transparente e reproduzível.
 
-Este projeto surgiu para preencher essa lacuna, oferecendo uma solução simples, auditável e totalmente executada no navegador do usuário.
+Em diversos Comitês de Assessoramento do CNPq, o **somatório do fator de impacto (baseado no JCR)** é utilizado como critério quantitativo na avaliação da produção científica, em especial nos processos de enquadramento e classificação para Bolsas de Produtividade em Pesquisa. No entanto, esse indicador **não é fornecido de forma direta pela Plataforma Lattes**, exigindo que o próprio pesquisador realize levantamentos manuais, artigo por artigo, frequentemente sujeitos a erros, inconsistências e falta de transparência.
+
+Na prática, o cálculo do somatório do fator de impacto a partir do Currículo Lattes é um processo **trabalhoso, repetitivo e pouco auditável**, especialmente para pesquisadores com produção extensa ou distribuída ao longo de muitos anos. Além disso, não há uma forma padronizada de verificar ou reproduzir esse cálculo a partir do próprio arquivo do currículo.
+
+Este projeto surgiu a partir de uma demanda concreta da comunidade acadêmica para **organizar, verificar e sistematizar** essas informações de maneira objetiva. O *Lattes JCR Parser* oferece uma solução simples, auditável e inteiramente executada no navegador do usuário, permitindo a extração do fator de impacto (IF_JCR), o cálculo de somatórios e a visualização temporal da produção científica, sem coleta ou transmissão de dados.
 
 ---
 
 ## O que é o JCR
 
-O Journal Citation Reports (JCR) é um indicador bibliométrico publicado pela Clarivate Analytics que expressa, de forma resumida, o impacto médio dos artigos publicados em um periódico científico em um determinado ano.
+O *Journal Citation Reports* (JCR), publicado pela Clarivate Analytics, é a base de dados que reúne indicadores bibliométricos de periódicos científicos indexados na *Web of Science*. Entre esses indicadores, o mais amplamente utilizado é o **Fator de Impacto (Impact Factor – IF)**, que expressa o número médio de citações recebidas, em um determinado ano, por artigos publicados no periódico em um período de referência.
 
-Embora o JCR não seja um indicador absoluto de qualidade individual de artigos ou pesquisadores, ele é amplamente utilizado como critério auxiliar em avaliações acadêmicas, editais e relatórios institucionais.
+O JCR não avalia artigos ou pesquisadores individualmente, mas fornece métricas associadas aos periódicos científicos. Ainda assim, o fator de impacto derivado do JCR é amplamente utilizado como critério auxiliar em avaliações acadêmicas, editais e relatórios institucionais, especialmente quando combinado com análises qualitativas e contextuais da produção científica.
 
 ## Como o programa funciona
 
-O *Lattes JCR Parser* opera exclusivamente em ambiente *client-side*, escrito em JavaScript, o que significa que todo o processamento ocorre localmente no navegador do usuário.
-
-Nenhum dado é enviado, armazenado ou transmitido para servidores externos. Nenhuma informação é gravada ou compartilhada.
-
-Para que o aplicativo funcione corretamente, é necessário que o navegador permita a execução de JavaScript. Caso o JavaScript esteja desabilitado por configurações de segurança, extensões de bloqueio ou políticas institucionais, o processamento não será executado.
+O *Lattes JCR Parser* opera exclusivamente em ambiente *client-side*, escrito em JavaScript, o que significa que todo o processamento ocorre localmente no navegador do usuário. Nenhum dado é enviado, armazenado ou transmitido para servidores externos. Nenhuma informação é gravada ou compartilhada. Para que o aplicativo funcione corretamente, é necessário que o navegador permita a execução de JavaScript. Caso o JavaScript esteja desabilitado por configurações de segurança, extensões de bloqueio ou políticas institucionais, o processamento não será executado.
 
 O funcionamento básico consiste em:
 
 1. O usuário faz o upload do arquivo HTML **completo** do Currículo Lattes  
 2. O programa analisa a estrutura do HTML  
 3. São identificados os artigos completos publicados em periódicos  
-4. Quando disponível, o fator de impacto JCR é extraído a partir do ícone “jcr” presente no próprio HTML do Lattes  
+4. Quando disponível, o fator de impacto do JCR é extraído a partir do ícone “jcr” presente no próprio HTML do Lattes  
 5. Os dados são organizados em uma tabela contendo:
    - Ano
    - Referência completa
-   - Ano do JCR
-   - Valor do JCR
+   - Ano do IF_JCR
+   - Valor do IF_JCR
 6. O usuário pode definir um intervalo de anos e calcular:
    - Número de artigos no período
    - Número de artigos com JCR
-   - Soma total do JCR
-   - Média do JCR no intervalo selecionado
+   - Soma total do IF_JCR
+   - Média do IF_JCR no intervalo selecionado
 7. Todos os dados podem ser exportados para Excel
 
 ## Requisitos fundamentais
@@ -65,7 +64,7 @@ O funcionamento básico consiste em:
 
 ## Sobre inconsistências nos resultados
 
-Caso algum artigo não apresente valor de JCR ou apareça com informações incompletas, recomenda-se verificar primeiramente:
+Caso algum artigo não apresente valor de IF_JCR ou apareça com informações incompletas, recomenda-se verificar primeiramente:
 
 - Se o lançamento do artigo no Currículo Lattes está correto  
 - Se o periódico possui JCR no ano correspondente  
@@ -77,7 +76,7 @@ O programa apenas extrai informações que já estão presentes no HTML gerado p
 
 O somatório de JCR não constitui um indicador bibliométrico oficial. Os resultados devem ser utilizados de forma exploratória, comparativa ou para organização interna. A ferramenta não substitui análises qualitativas da produção científica.
 
-Porém, o gráfico de JCR acumulado ao longo do tempo tem caráter auxiliar e exploratório, sendo particularmente útil para visualizar tendências e a rampa de crescimento da produção associada a periódicos com fator de impacto registrado. Ainda assim, não deve ser interpretado como métrica formal de avaliação.
+Porém, o gráfico de IF_JCR acumulado ao longo do tempo tem caráter auxiliar e exploratório, sendo particularmente útil para visualizar tendências e a rampa de crescimento da produção associada a periódicos com fator de impacto registrado. Ainda assim, não deve ser interpretado como métrica formal de avaliação.
 
 ## Desenvolvimento contínuo
 
