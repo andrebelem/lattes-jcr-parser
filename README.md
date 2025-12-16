@@ -1,4 +1,6 @@
-<img src="assets/lattes-jcr-parser.png" alt="Lattes JCR Parser logo" width="250" align="left"></img>
+<p align="center">
+  <img src="assets/lattes-jcr-parser.png" alt="Lattes JCR Parser logo" width="250">
+</p>
 
 # Lattes JCR Parser
 
