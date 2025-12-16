@@ -4,11 +4,9 @@
 // - Extrai Ano, Referência (limpa) e JCR (quando existir)
 // - Preview configurável (10/50/200/todas)
 // - Somatório de JCR por intervalo de anos (Ano inicial / Ano final)
-// - Gráfico: JCR anual (soma) e JCR acumulado por ano (Chart.js)
 // - Exporta Excel com todos os registros
 
 let data = [];
-let jcrChart = null;
 
 const fileInput = document.getElementById("fileInput");
 const processBtn = document.getElementById("processBtn");
@@ -48,18 +46,10 @@ function getReferenceText(div) {
   return (clone.textContent || "").replace(/\s+/g, " ").trim();
 }
 
-function destroyChartIfAny() {
-  if (jcrChart) {
-    jcrChart.destroy();
-    jcrChart = null;
-  }
-}
-
 function clearUI() {
   data = [];
   renderTable();
   renderSummary(); // limpa
-  destroyChartIfAny();
 
   downloadBtn.disabled = true;
 
@@ -93,8 +83,7 @@ processBtn?.addEventListener("click", () => {
     let html = new TextDecoder("windows-1252").decode(buf);
 
     // Fallback simples (se alguém salvou em UTF-8)
-    // Observação: se a string vier com "�" e sem termos típicos, tenta UTF-8
-    if (!html.includes("Currículo") && !html.includes("Artigos") && html.includes("�")) {
+    if (!html.includes("Currículo") && !html.includes("Artigos") && html.includes(" ")) {
       html = new TextDecoder("utf-8").decode(buf);
     }
 
@@ -105,8 +94,7 @@ processBtn?.addEventListener("click", () => {
 });
 
 calcBtn?.addEventListener("click", () => {
-  renderSummary();     // recalcula com intervalo selecionado
-  renderJcrChart();    // redesenha o gráfico com o mesmo intervalo
+  renderSummary(); // recalcula com intervalo selecionado
 });
 
 downloadBtn?.addEventListener("click", () => {
@@ -153,25 +141,6 @@ function parseHTML(html) {
     });
   });
 
-  // Caso 1: nenhum artigo
-  if (!data.length) {
-    renderTable();       // limpa preview
-    destroyChartIfAny(); // limpa gráfico
-    downloadBtn.disabled = true;
-
-    if (yearRangeBox) yearRangeBox.style.display = "none";
-    if (calcBtn) calcBtn.disabled = true;
-
-    if (summaryDiv) {
-      summaryDiv.innerHTML = `
-        <strong>Nenhum artigo com JCR encontrado</strong><br>
-        Este currículo não contém itens na seção “Artigos completos publicados em periódicos”
-        (blocos <code>div.artigo-completo</code>). Se você esperava artigos, verifique se salvou o Lattes completo e se o currículo possui artigos cadastrados.
-      `;
-    }
-    return;
-  }
-
   // Ordena por ano desc (quando possível)
   data.sort((a, b) => (toIntSafe(b.Ano) ?? 0) - (toIntSafe(a.Ano) ?? 0));
 
@@ -179,23 +148,8 @@ function parseHTML(html) {
 
   renderTable();
   renderSummary();
-  renderJcrChart();
 
-  downloadBtn.disabled = false;
-
-  // Caso 2: existem artigos, mas nenhum tem JCR no HTML
-  const jcrCount = data
-    .map(r => toFloatSafe(r.JCR_Valor))
-    .filter(Number.isFinite).length;
-
-  if (jcrCount === 0 && summaryDiv) {
-    summaryDiv.innerHTML = `
-      <strong>Nenhum artigo com JCR encontrado</strong><br>
-      Foram encontrados ${data.length} artigo(s), mas nenhum contém valores de JCR no HTML.
-      Isso normalmente ocorre quando o arquivo foi salvo pelo Chrome (ou sem “Página completa”) e o tooltip do JCR não foi preservado.
-      Salve pelo Firefox (Página completa) e tente novamente.
-    `;
-  }
+  downloadBtn.disabled = data.length === 0;
 }
 
 // ----------------- Year range controls -----------------
@@ -280,95 +234,6 @@ function renderSummary() {
   `;
 }
 
-// ----------------- Chart: annual and accumulated JCR -----------------
-function buildJcrAccumulatedSeries(fromYear = null, toYear = null) {
-  const annual = new Map();
-
-  data.forEach(r => {
-    const y = toIntSafe(r.Ano);
-    const j = toFloatSafe(r.JCR_Valor);
-    if (y === null || j === null) return;
-
-    if (fromYear !== null && y < fromYear) return;
-    if (toYear !== null && y > toYear) return;
-
-    annual.set(y, (annual.get(y) || 0) + j);
-  });
-
-  const years = Array.from(annual.keys()).sort((a, b) => a - b);
-
-  let acc = 0;
-  const accumulated = years.map(y => {
-    acc += annual.get(y);
-    return Number(acc.toFixed(4));
-  });
-
-  const perYear = years.map(y => Number((annual.get(y) || 0).toFixed(4)));
-
-  return { years, perYear, accumulated };
-}
-
-function renderJcrChart() {
-  const canvas = document.getElementById("jcrChart");
-  if (!canvas) return;                 // não desenha se você não incluiu o canvas no index.html
-  if (typeof Chart === "undefined") {  // Chart.js não carregou
-    destroyChartIfAny();
-    return;
-  }
-
-  if (!data.length) {
-    destroyChartIfAny();
-    return;
-  }
-
-  let from = yearFromInput ? toIntSafe(yearFromInput.value) : null;
-  let to = yearToInput ? toIntSafe(yearToInput.value) : null;
-
-  if (from !== null && to !== null && from > to) {
-    const tmp = from;
-    from = to;
-    to = tmp;
-  }
-
-  const { years, perYear, accumulated } = buildJcrAccumulatedSeries(from, to);
-
-  if (!years.length) {
-    destroyChartIfAny();
-    return;
-  }
-
-  destroyChartIfAny();
-
-  jcrChart = new Chart(canvas, {
-    type: "line",
-    data: {
-      labels: years,
-      datasets: [
-        {
-          label: "JCR acumulado",
-          data: accumulated,
-          tension: 0.2
-        },
-        {
-          label: "JCR anual (soma)",
-          data: perYear,
-          tension: 0.2
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: true }
-      },
-      scales: {
-        x: { title: { display: true, text: "Ano" } },
-        y: { title: { display: true, text: "JCR (soma / acumulado)" } }
-      }
-    }
-  });
-}
-
 // ----------------- Preview table -----------------
 function renderTable() {
   const table = document.getElementById("preview");
@@ -400,3 +265,4 @@ function renderTable() {
     });
   });
 }
+

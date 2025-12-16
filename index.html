@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,78 +6,131 @@
   <title>Lattes JCR Parser</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <main>
-    <h1>Lattes JCR Parser</h1>
 
-    <p>
-      Envie o arquivo <strong>HTML completo</strong> do Currículo Lattes (salvo como “Página completa”,
-      preferencialmente via Firefox). Todo o processamento ocorre localmente no seu navegador.
-    </p>
+<header class="card">
+  <div style="display:flex; align-items:center; gap:12px;">
+    
+    <!-- Logos -->
+    <div style="display:flex; align-items:center; gap:8px;">
+      <img src="assets/lattes.png" alt="Logo Lattes CNPq" style="height:32px; width:auto;" />
+      <img src="assets/o2.png" alt="Logo Observatório Oceanográfico" style="height:32px; width:auto;" />
+    </div>
 
-    <section class="card">
-      <label for="fileInput"><strong>Arquivo HTML do Lattes</strong></label><br />
-      <input type="file" id="fileInput" accept=".html,.htm" />
-
-      <p class="hint">
-        Observação: arquivos <code>.mhtml</code> não são suportados. Salve como HTML completo.
+    <!-- Título -->
+    <div>
+      <h1 style="margin:0;">Lattes JCR Parser</h1>
+      <p class="hint" style="margin:4px 0 0 0;">
+        Extração e somatório de JCR a partir do HTML completo do Currículo Lattes, com execução local no navegador.
       </p>
+    </div>
+  </div>
+</header>
 
-      <div class="controls">
-        <label for="previewLimit">
-          Pré-visualização:
-          <select id="previewLimit">
-            <option value="10">10 linhas</option>
-            <option value="50">50 linhas</option>
-            <option value="200">200 linhas</option>
-            <option value="all">Todas</option>
-          </select>
-        </label>
+<section class="card">
+  <br><br>
+  <h2 style="margin-top:0;">1) Gere o arquivo correto</h2>
 
-        <div class="buttons">
-          <button id="processBtn" disabled>Processar</button>
-          <button id="downloadBtn" disabled>Baixar Excel</button>
-        </div>
-      </div>
+  <p>
+    Este aplicativo requer que o Currículo Lattes seja salvo como <strong>HTML completo</strong> (página completa),
+    incluindo a pasta de arquivos associada.
+  </p>
 
-      <!-- Bloco de intervalo de anos: aparece só depois de processar -->
-      <div id="yearRangeBox" style="display:none; margin-top:12px;">
-        <label>
-          Ano inicial:
-          <input type="number" id="yearFrom" placeholder="ex: 2015">
-        </label>
+  <p class="hint">
+    Importante: o HTML salvo pelo <strong>Google Chrome</strong> frequentemente não preserva corretamente elementos e metadados
+    usados pelo Lattes (incluindo o conteúdo associado ao ícone “jcr”), o que pode resultar em extração incompleta.
+    Recomenda-se fortemente salvar pelo <strong>Mozilla Firefox</strong>, usando a opção “Página completa”.
+  </p>
 
-        <label style="margin-left:12px;">
-          Ano final:
-          <input type="number" id="yearTo" placeholder="ex: 2025">
-        </label>
+  <p class="hint">
+    Arquivos <code>.mhtml</code> não são suportados.
+  </p>
+</section>
 
-        <button id="calcBtn" style="margin-left:12px;" disabled>
-          Calcular somatório
-        </button>
+<section class="card">
+  <h2 style="margin-top:0;">2) Faça upload do HTML e processe</h2>
 
-        <p class="hint" style="margin-top:8px;">
-          Dica: o somatório usa apenas registros que têm JCR no HTML.
-        </p>
-      </div>
+  <label for="fileInput"><strong>Arquivo HTML do Lattes</strong></label><br />
+  <input type="file" id="fileInput" accept=".html,.htm" />
 
-      <div id="summary" class="summary"></div>
-    </section>
+  <div class="controls" style="margin-top:12px;">
+    <label for="previewLimit">
+      Pré-visualização:
+      <select id="previewLimit">
+        <option value="10">10 linhas</option>
+        <option value="50">50 linhas</option>
+        <option value="200">200 linhas</option>
+        <option value="all">Todas</option>
+      </select>
+    </label>
 
-    <section class="card">
-      <h2>Pré-visualização</h2>
-      <div class="table-wrap">
-        <table id="preview" aria-label="Pré-visualização dos artigos extraídos"></table>
-      </div>
-    </section>
+    <div class="buttons">
+      <button id="processBtn" disabled>Processar</button>
+      <button id="downloadBtn" disabled>Baixar Excel</button>
+    </div>
+  </div>
 
-    <footer class="footer">
-      <small>
-        O JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes (ex.: atributo <code>original-title</code>).
-        Se o HTML não contiver esses ícones, as colunas de JCR ficarão vazias.
-      </small>
-    </footer>
+  <!-- Bloco de intervalo de anos -->
+  <div id="yearRangeBox" style="display:none; margin-top:12px;">
+    <label>
+      Ano inicial:
+      <input type="number" id="yearFrom" placeholder="ex: 2015">
+    </label>
+
+    <label style="margin-left:12px;">
+      Ano final:
+      <input type="number" id="yearTo" placeholder="ex: 2025">
+    </label>
+
+    <button id="calcBtn" style="margin-left:12px;" disabled>
+      Calcular somatório
+    </button>
+
+    <p class="hint" style="margin-top:8px;">
+      O somatório usa apenas registros cujo HTML contém o valor de JCR (ícone “jcr” com tooltip).
+    </p>
+  </div>
+
+  <div id="summary" class="summary" style="margin-top:12px;"></div>
+
+  <div class="hint" style="margin-top:12px;">
+    <br><br><br>
+    <strong>Disclaimer</strong><br>
+    O arquivo Excel gerado deve ser conferido pelo usuário antes de qualquer uso em relatórios, editais ou avaliações.
+    Em caso de inconsistências, verifique primeiro se o lançamento no Lattes está correto e se o HTML foi salvo como
+    “Página completa” no Firefox.
+    <br><br>
+  </div>
+</section>
+
+<section class="card">
+  <h2 style="margin-top:0;">Pré-visualização</h2>
+  <div class="table-wrap">
+    <table id="preview" aria-label="Pré-visualização dos artigos extraídos"></table>
+  </div>
+</section>
+<section class="card">
+  <br><br>
+  <h2 style="margin-top:0;">JCR acumulado por ano</h2>
+  <canvas id="jcrChart" height="100"></canvas>
+  <br><br>
+</section>
+<footer class="footer">
+  <small>
+    Privacidade e execução local: todo o processamento ocorre em client-side. Nenhum dado é enviado, armazenado ou transmitido para servidores externos.<br>
+    Nota técnica: o JCR é extraído do tooltip do ícone “jcr” no HTML do Lattes (atributo <code>original-title</code>). Se o HTML não contiver esses ícones, as colunas de JCR ficarão vazias.
+    <br><br>
+
+    <strong>Links úteis</strong><br>
+    <a href="WHYNOT.md" target="_blank">Por que usar Firefox em vez de Chrome</a><br>
+    <a href="https://github.com/andrebelem/lattes-jcr-parser" target="_blank">Repositório no GitHub</a><br>
+    <a href="https://buymeacoffee.com/andrebelem" target="_blank">Buy me a coffee</a>
+  </small>
+</footer>
+
   </main>
 
   <script src="app.js"></script>
